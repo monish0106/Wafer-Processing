@@ -73,7 +73,7 @@ n_files = len(files)
 data = [] 
 for i in range(n_files):
     data.append(utilities.Utilities.read_dataset_one(curr_dir,files[i],num_examples))
-
+    
 # Train Test split 
 random.shuffle(data)
 
@@ -88,6 +88,7 @@ train_object = Data()
 all_y = [] 
 for i in range(len(train_data)):
     all_y.append(train_data[i][1])
+    
 values = np.array(all_y)
 label_encoder = LabelEncoder()
 integer_encoded = label_encoder.fit_transform(values)
@@ -98,6 +99,7 @@ onehot_encoded = onehot_encoder.fit_transform(np.array(integer_encoded))
 test_y = [] 
 for i in range(len(test_data)):
     test_y.append(test_data[i][1])
+
 test_values = np.array(test_y)
 integer_test = label_encoder.transform(test_values)
 integer_test = integer_test.reshape(len(integer_test), 1)
@@ -116,6 +118,7 @@ test_object.target = onehot_test
 test_object.num_examples = len(test_data)
 
 # plot() 
+print(train_object.data)
 
 #Classification 
 lstm.basic_lstm_technique(train_object,test_object,time_steps = num_examples, num_units = 32, n_input = 10, lr = 0.01,n_classes = 2,bs = train_object.num_examples)

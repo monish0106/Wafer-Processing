@@ -45,16 +45,16 @@ def basic_lstm_technique(data,test_data,time_steps = 400, num_units = 32, n_inpu
     with tf.Session() as sess:
        
         sess.run(init)
-   
+        
         iter=1
-        while iter< 100:
+        while iter< 50:
 
 ############################################# IMPLEMENTED MY CODE HERE ########################################          
-            batch_x,batch_y= data.next_batch(data.num_examples)
+            batch_x,batch_y= data.next_batch(bs)
             batch_x = np.asarray(batch_x)
 #             lr = lr / (iter +1) 
                    ##############################################################################################################
-            sess.run(opt, feed_dict={x: batch_x, y: batch_y,learning_rate: lr,batch_size: data.num_examples})
+            sess.run(opt, feed_dict={x: batch_x, y: batch_y,learning_rate: lr,batch_size: bs})
         
             if iter /1==iter:
                 

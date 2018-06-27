@@ -4,6 +4,39 @@ from matplotlib import pyplot as plt
 
 class Utilities:
     
+    def shrink_data(data,inc):
+        temp_data = []
+        for ii in range(0,len(data),inc):
+            temp_data.append(data.iloc[ii:ii+inc].mean(axis=0))
+           
+#         print(len(temp_data))
+        return pd.DataFrame(temp_data)
+            
+        
+    
+    def read_dataset_one_bucket(dir_name,files,inc):
+        
+        bucket = {}
+        
+        for file in files:
+            
+            key = file[4:]
+            
+            if key not in bucket:
+                bucket[key] = [] 
+                
+            name = dir_name + "/" + file
+            data = pd.read_csv(name,header=None)
+            
+            del data[0]
+            
+            data = Utilities.shrink_data(data,inc)
+#             break 
+#             print(len(data))
+            bucket[key].append(data)
+    s
+        return bucket 
+    
     def read_dataset_one(dir_name,filename,num_examples):
         
 #         The filename is of the format 000_Et_H_CO_H 
@@ -12,17 +45,14 @@ class Utilities:
 #         class_1 -> Ethylene 
 #         class_2 -> Carbon-Monoxide
 #         class_3 -> Methane 
-        if filename[7] == 'n':
-            class_1 = 'N'
-        else:
-            class_1 = 'Y'
-        
+        class_1 = filename[7]
+    
         if filename[9] == 'C':
-            class_2 = filename[9:]
-            class_3 = 'Me_n'
+            class_2 = filename[12]
+            class_3 = 'n'
         else:
-            class_2 = 'CO_n'
-            class_3 = filename[9:]
+            class_2 = 'n'
+            class_3 = filename[12]
         
         name = dir_name + "/" + filename
         data = pd.read_csv(name,header=None)
@@ -54,7 +84,7 @@ class Utilities:
                 class_3 = filename[9:]
 
             df = pd.DataFrame()
-            print(df)
+#             print(df)
             
             
             name = dir_name + "/" + filename
@@ -68,3 +98,4 @@ class Utilities:
             del data[0]
             normalized_data=(data-data.mean())/data.std()
             return [normalized_data.values[0:num_examples],class_1,class_2,class_3]
+     
